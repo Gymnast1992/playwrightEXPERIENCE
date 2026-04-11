@@ -1,19 +1,20 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test('Verify homepage title', async ({ page }) => {
+  await page.goto('https://experience-book.com/');
 
   // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
+  await expect(page).toHaveTitle(/L'expérience/);
 });
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test('À propos du livre button', async ({ page }) => {
+  const locator = page.locator('h3');
+  await page.goto('https://experience-book.com/');
 
   // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
+  await page.getByRole('link', { name: 'À propos du livre' }).click();
 
   // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+  await expect(locator).toContainText('À propos du livre');
 });
