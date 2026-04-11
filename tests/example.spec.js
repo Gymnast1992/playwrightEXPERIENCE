@@ -1,16 +1,18 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 
-test('Verify homepage title', async ({ page }) => {
+test.beforeEach('Open start URL', async ({ page }) => {
+  console.log(`Running ${test.info().title}`);
   await page.goto('https://experience-book.com/');
+});
 
+test('Verify homepage title', async ({ page }) => {
   // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/L'expérience/);
 });
 
 test('À propos du livre button', async ({ page }) => {
   const locator = page.locator('h3');
-  await page.goto('https://experience-book.com/');
 
   // Click the get started link.
   await page.getByRole('link', { name: 'À propos du livre' }).click();
