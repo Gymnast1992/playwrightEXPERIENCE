@@ -1,5 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
+import { Homepage } from '../../pages/fr/homepage.page';
 
 test.beforeEach('Open start URL', async ({ page }) => {
   console.log(`Running ${test.info().title}`);
@@ -7,8 +8,9 @@ test.beforeEach('Open start URL', async ({ page }) => {
 });
 
 test('Verify homepage title', async ({ page }) => {
+  const homepage = new Homepage(page);
   // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/L'expérience/);
+  await homepage.verifyMainTitle("l'Expérience");
 });
 
 test('À propos du livre button', async ({ page }) => {
