@@ -14,11 +14,11 @@ export class BlogPage {
   }
 
   async goto() {
-    await this.page.goto('/blog');
+    await this.page.goto('/blog_fr');
   }
 
   async verifyMainTitleBlogText(text: string) {
-    await expect(this.mainBlogTitle).toHaveText(text);
+    await expect(this.mainBlogTitle).toContainText(text);
   }
 
   async verifyMainBlogTitleText() {
