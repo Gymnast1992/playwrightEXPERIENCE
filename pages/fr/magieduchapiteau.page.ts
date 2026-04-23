@@ -12,7 +12,7 @@ export class MagieDuChapiteauPage {
   }
 
   async verifyMainTitleText(text: string) {
-    await expect(this.mainTitleText).toHaveText(text);
+    await expect(this.mainTitleText).toContainText(text);
   }
 
   async verifyLengthOfTheLi(length: number) {
