@@ -74,7 +74,6 @@ test.describe('Homepage', () => {
   test('TC_07, Verify "Blog" button is clickable and navigates to the correct page', async ({
     page,
   }) => {
-    await page.getByRole('button', { name: /navigation menu/i }).click();
     await page.getByRole('link', { name: 'Blog' }).click();
 
     await expect(page).toHaveURL(/\/blog_fr/);
@@ -91,16 +90,12 @@ test.describe('Homepage', () => {
   });
 
   test('TC_09, Verify #Styledevie section on the page', async ({ page }) => {
-    await page.goto('https://experience-book.com/');
-
     await expect(
       page.getByRole('heading', { name: '#Styledevie' }),
     ).toBeVisible();
   });
 
   test('TC_10, Verify US Amazon link', async ({ page }) => {
-    await page.goto('https://experience-book.com/');
-
     const amazonUS = page.getByRole('link', { name: /Amazon\.com/i });
 
     await expect(amazonUS).toBeVisible();
@@ -111,9 +106,7 @@ test.describe('Homepage', () => {
   });
 
   test('TC_11, Verify French Amazon link', async ({ page }) => {
-    await page.goto('https://experience-book.com/');
-
-    const amazonFR = page.getByRole('link', { name: /Amazon\.fr/i });
+    const amazonFR = page.getByRole('link', { name: /Amazon\.fr/i }).nth(1);
 
     await expect(amazonFR).toBeVisible();
     await expect(amazonFR).toHaveAttribute('href', 'https://amzn.eu/6BpwhAi');
