@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { Homepage } from '../../pages/fr/homepage.page';
+import { homedir } from 'node:os';
 
 test.describe('Homepage', () => {
   test.beforeEach('Open start URL', async ({ page }) => {
@@ -18,23 +19,20 @@ test.describe('Homepage', () => {
   test('TC_02, Verify EN and FR language buttons are visible in the header', async ({
     page,
   }) => {
-    const buttonEn = page.locator('a.t199__lang-item', { hasText: 'EN' });
-    const buttonFr = page.locator('a.t199__lang-item', { hasText: 'FR' });
+    const homepage = new Homepage(page);
 
-    await expect(buttonEn).toBeVisible();
-    await expect(buttonFr).toBeVisible();
+    await homepage.verifyLangButtonEN();
+    await homepage.verifyLangButtonFR();
   });
 
   test('TC_03, Verify user can switch language from French to English', async ({
     page,
   }) => {
-    await page.locator('a.t199__lang-item', { hasText: 'EN' }).click();
-
+    const homepage = new Homepage(page);
+    await homepage.clickOnButtonEn();
     // Verify English page loaded (URL + title)
-    await expect(page).toHaveURL(/\/en/);
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(
-      'The Experience',
-    );
+    await homepage.verifyPageURL();
+    await homepage.verifyTextOnThePage();
   });
 
   test('TC_04, Verify 3 header buttons are displayed in the hamburger menu', async ({
@@ -61,8 +59,10 @@ test.describe('Homepage', () => {
   test('TC_06, Verify "Achat" button is clickable and navigates to the correct section', async ({
     page,
   }) => {
+    const homepage = new Homepage(page);
+
     await page.setViewportSize({ width: 375, height: 812 });
-    await page.locator('.t-menuburger.t-menuburger_first').click();
+    await homepage.clickHambMenu();
     await page.getByRole('link', { name: 'Achat' }).click();
 
     await expect(page).toHaveURL(/#rec/);
