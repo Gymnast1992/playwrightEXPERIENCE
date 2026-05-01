@@ -16,13 +16,14 @@ export class Homepage {
   readonly sectionLifeStyle: Locator;
   readonly linkAmazonFr: Locator;
   readonly linkAmazonDe: Locator;
+  readonly heading: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.mainTitle = page.locator('h1.t-title');
-    this.buttonHambMenu = page.locator('a [type="button"]');
-    this.buttonEn = page.locator('[class="t199__lang-item"]').nth(0);
-    this.buttonFr = page.locator('[class="t199__lang-item"]').nth(1);
+    this.buttonHambMenu = page.locator('.t-menuburger.t-menuburger_first');
+    this.buttonEn = page.locator('a.t199__lang-item', { hasText: 'EN' });
+    this.buttonFr = page.locator('a.t199__lang-item', { hasText: 'FR' });
     this.listingsHambMenu = page.locator('li.t199__menu-item-wrap');
     this.liAboutTheBook = page.locator('li.t199__menu-item-wrap').nth(0);
     this.liPurchase = page.locator('li.t199__menu-item-wrap').nth(1);
@@ -32,7 +33,10 @@ export class Homepage {
     this.buttonReadMyBlog = page.locator('a.t-btn').nth(0);
     this.sectionLifeStyle = page.getByText('#lifestyle');
     this.linkAmazonFr = page.locator('[href="https://amzn.eu/6BpwhAi"]').nth(1);
-    this.linkAmazonDe = page.locator('[href="https://amzn.eu/d/09Xg7SG3"]').nth(0);
+    this.linkAmazonDe = page
+      .locator('[href="https://amzn.eu/d/09Xg7SG3"]')
+      .nth(0);
+    this.heading = page.getByRole('heading', { level: 1 });
   }
 
   async goto() {
@@ -44,15 +48,15 @@ export class Homepage {
   }
 
   async clickHambMenu() {
-    await this.buttonHambMenu.click({ force: true });
+    await this.buttonHambMenu.click();
   }
 
   async verifyLangButtonEN() {
-    await expect(this.buttonEn).toHaveText('EN');
+    await expect(this.buttonEn).toBeVisible();
   }
 
   async verifyLangButtonFR() {
-    await expect(this.buttonFr).toHaveText('FR');
+    await expect(this.buttonFr).toBeVisible();
   }
 
   async verifyLengthHambMenuLi(num: number) {
@@ -83,6 +87,10 @@ export class Homepage {
     await this.buttonFr.click();
   }
 
+  async clickOnButtonEn() {
+    await this.buttonEn.click();
+  }
+
   async clickPurchaseLi() {
     await this.liPurchase.click();
   }
@@ -109,5 +117,13 @@ export class Homepage {
 
   async verifyAmazonDeLink(link: string) {
     await expect(this.linkAmazonDe).toHaveAttribute('href', link);
+  }
+
+  async verifyTextOnThePage() {
+    await expect(this.heading).toContainText('The Experience');
+  }
+
+  async verifyPageURL() {
+    await expect(this.page).toHaveURL(/\/en/);
   }
 }
